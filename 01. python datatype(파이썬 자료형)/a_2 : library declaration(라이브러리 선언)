@@ -1,0 +1,33 @@
+#라이브러리 선언
+#library declaration
+
+
+from datetime import datetime
+# -> 데이트타임 라이브러리 선언
+
+# 현재 시간과 분을 입력받아서 두개를 더하는 코드 만들기
+
+import datetime # 데이트 타임 라이브러리 선언
+
+now = datetime.datetime.now(); # now변수 선언 후, 해당 값에 현재 시간 불러오기
+
+print("현재시간 : ",now); # 현재시간 : 시간을 프린트
+
+now_hour = now.hour; # 현재시간중에서 시간을 변수 now_hour에 저장
+
+print("현재시 : ",now_hour); # 현재시를 프린트
+
+now_min = now.minute; # 현재시간중에서 분을 변수 now_min에 저장
+
+print("현재분 : ", now_min); # 현재분을 프린트
+
+sum = now_hour + now_min; # sum 변수에 현재 시와 현재 분을 더함
+
+print("두개를 더한값 : ",sum); #더한값을 출력
+
+#결과 : 
+#현재시간 :  2023-03-06 17:15:24.316102
+#현재시 :  17
+#현재분 :  15
+#두개를 더한값 :  32
+
