@@ -1,0 +1,12 @@
+#문자열 선언
+#string declaration
+#문자열 선언 시에는 <'>, <">, <"""> 사용
+
+#변수값에 ' 가 잇을 경우 "" 처리
+#ex)
+string_value= "I'm a boy";
+
+#변수값에 "가 잇을 경우 '' 처리
+#ex)
+string_value = 'this is "String" value';
+
