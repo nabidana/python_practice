@@ -1,0 +1,12 @@
+#divmod declaration
+#divmod함수 선언
+
+#divmod 함수 선언시 규칙
+divmod(a, b)
+
+# a와 b의 몫과 나머지 구하는 방법
+a = 10
+b = 3
+c,d = divmod(a,b)
+print("몫은 : ", c, "나머지는 : ", d);
+
