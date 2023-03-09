@@ -1,0 +1,21 @@
+from time import sleep  #sleep라이브러리 함수사용
+
+def rocket_runch_count_down(number) : #def는 함수를 정의하는 언어.
+    if number < 0:  #if문
+        #if문 사용법
+        # if 조건문:
+            #실행문
+        # else 조건문 :
+            #실행문
+        print("준비 완료")
+        return print("로켓 발사!!")
+    else :
+        print(f'로켓 발사 {number}초 전....')
+        #print안에 단어'f'는 f-string으로 문자열 안에 값이나 변수를 삽입하는 방법이다
+        #예제로 만약 number에10 입력시 print는 <로켓 발사 10초 전>으로 나타난다.
+        sleep(1)
+        #sleep문은 sleep 라이브러리를 이용하는 함수. 리눅스에서 사용했던 sleep과 동일.
+        #사용방법 : sleep(초단위숫자입력)
+        rocket_runch_count_down(number -1)
+
+rocket_runch_count_down(10)
