@@ -1,3 +1,205 @@
-#Pattern matching
-#1. 패턴 매칭들 중 
+# Pattern matching
+# 패턴 매칭들중에서 문자열 매칭 에는 4가지 방법이 있다.
+
+# 1. Native Matching (원시적 매칭) : 걸리는 시간 O(mn)
+# 2. Automata Algorithm (오토마타를 이용한 매칭) : 걸리는 시간 O(n + |∑(시그마)|m)
+        # ∑(시그마)|m -> m의 값이 증가할수록 걸리는 시간이 증가함
+# 3. Rabin-Karp Algorithm (라빈카프 알고리즘) : 걸리는시간 O(n)
+# 4. KMP(Knuth Morris Pratt) Algorithm (KMP 알고리즘) : 걸리는 시간 O(n)
+# 5. Boyer-Moore Algorithm (보이어무어 알고리즘) : 걸리는 시간 O(n) Worst Case :O(nm)
+
+# 1. Native Matching
+#     >패턴이 주어졌을 때, 원시적으로 처음부터 대입하여 비교하는것
+
+# Searching example
+def search(pat, txt) :
+    M = len(pat)        #len 함수에 대해서
+    N = len(txt)        #len 함수 사용법은 >> len(문자열)
+                        #len 함수는 문자열 길이를 반환한다.
+
+    for i in range(N - M + 1) :
+        #for문 : 반복문
+        #for문 사용법은 >> for 변수 in 요소(리스트) :
+        #요소의 첫번째 부터 끝까지 변수에 대입하여 반복하는 것.
+        j = 0
+
+        while(j < M) :
+            #while문 : 반복문
+            #while문 사용법은 >> while(조건)
+            #조건의 값이 True일 경우 반복하는 것.
+            if(txt[i + j] != pat[j]) :
+                #조건 txt에 있는 문자 "AABAACAADAABAAABAA" 에서 [i+j] 번에 있는 문자가 "AABA" 에서 [j]번에
+                #있는 문자와 동일하지 않다면 이라는 뜻
+                break   #break는 반복문을 종료시키는 것이다.
+            j += 1      #j += 1은 j = j + 1과 같다.
+
+        if (j == M) :
+            print("Pattern found at index ", i)
+
+if __name__ == '__main__' :
+    txt = "AABAACAADAABAAABAA"
+    pat = "AABA"
+    search(pat, txt)
+
+print("---------------------------------------------");
+# 2. Automata Algorithm(오토마타 알고리즘)
+#       >기본 뜻은 하나의 state pattern 으로써, 유한개의 상태와 각각 고유의 action을 가지고
+#        현재 상태에서 상태가 변화하거나 이벤트로써 상태를 전이하는것.
+#       여기에서는 FA에서 다음 상태를 찾고 새로운 상태로 움직이는 패턴이다.
+
+NO_OF_CHARS = 256
+
+def getNextState(pat, M, state, x):
+
+    if state < M and x == ord(pat[state]):  # ord(문자) 함수는 문자의 정수값(UNICODE VALUE)을 반환한다.
+        return state+1
+    
+    i=0
+
+    #for문 rang함수에 대해서
+    #for i in range(변수1) : 변수1의 0부터 시작한다.
+    #for i in range(변수1, 변수2) : 변수1부터 변수2까지 대입한다.
+    #for i in range(변수1, 변수2 ,변수3) : 변수1부터 변수2까지 변수3만큼차이를 두고 대입한다.
+    for ns in range(state,0,-1):        
+        if ord(pat[ns-1]) == x : 
+            while(i<ns-1):
+                if pat[i] != pat[state-ns+1+i]:
+                    break
+                i+=1
+            if i == ns-1 :
+                return ns
+    return 0
+
+def computeTF(pat, M) :
+    global NO_OF_CHARS      # global 함수는 전역변수로, 다른 함수에서도 접근이 가능하도록 하는것
+
+    TF = [[0 for i in range(NO_OF_CHARS)]\
+          for _ in range(M+1)]      # 반복문에서 변수가 필요없을경우 '_' 문자를 사용한다.
+                                    # 다른 언어에서는 그냥 줄바꿈을 해도 괜찮지만,
+                                    # 파이썬에서는 줄이 너무 길어지면 '\'를 이용하여 줄바꿈을 해야한다.
+                                    # 따라서 해당 구문은 그저 줄바꿈을 하기위해서 '\' 문자를 사용했다.
+                                    # 저 구문을 풀게 되면,
+                                    # [[0 for i in range(NO_OF_CHARS)] for _ in range(M+1)]
+                                    # 로 나타나게 된다.
+    for state in range(M+1) :
+        for x in range(NO_OF_CHARS) :
+            z = getNextState(pat, M, state, x)
+            TF[state][x] = z
+
+    return TF
+
+def search(pat, txt) :
+    global NO_OF_CHARS
+    M = len(pat)
+    N = len(txt)
+    TF = computeTF(pat, M)
+
+    state = 0
+    for i in range(N) :
+        state = TF[state][ord(txt[i])]
+        if state == M :
+            print("Pattern found at index: {}".\
+                  format(i-M+1))
+            
+def main() :
+    txt = "AABAACAADAABAAABAA"
+    pat = "AABA"
+    search(pat, txt)
+
+if __name__ == '__main__' :
+    main()
+
+print("---------------------------------------------");
+# 3. Rabin-Karp Algorithm(라빈-카프 알고리즘)
+#      >패턴의 해시값을 사용하여 모든 문자에 대해 패턴과 일치하는지 확인한다.
+
+d = 256
+
+def search(pat, txt, q) :
+    M = len(pat)
+    N = len(txt)
+    i = 0
+    j = 0
+    p = 0       # 해시 value pattern
+    t = 0       # 해시 value txt
+    h = 1
+
+    for i in range(M-1) :
+        h = (h*d)%q
+
+    for i in range(M) :
+        p = (d*p + ord(pat[i]))%q
+        t = (d*t + ord(txt[i]))%q
+    
+    for i in range(N-M+1) :
+        if p == t :
+            for j in range(M) :
+                if txt[i+j] != pat[j] :
+                    break
+
+            j += 1
+            if j == M :
+                print ("Pattern found at index " + str(i))
+        if i < N-M :
+            t = (d*(t-ord(txt[i])*h) + ord(txt[i+M]))%q
+
+            if t < 0 :
+                t = t+q
+
+txt = "GEEKS FOR GEEKS"
+pat = "GEEK"
+q = 101
+search(pat, txt, q)
+
+print("---------------------------------------------");
+
+# 4.KMP Algorithm (KMP 알고리즘 = Knuth-Morris_Pratt Algorithm)
+#       >오토마타매칭과 유사하지만 준비작업이 더 단순하다.
+#현재 동작을 제대로 안함
+
+# def KMPSearch(pat, txt) :
+#     M = len(pat)
+#     N = len(txt)
+
+#     Ips = [0]*M
+#     j = 0
+#     computeLPSArray(pat, M, Ips)
+
+#     i = 0
+#     while i < N :
+#         if pat[j] == txt[i] :
+#             i += 1
+#             j += 1
+        
+#         if j == M :
+#             print("Found pattern at index " + str(i-j))
+#             j = Ips[j-1]
+        
+#         elif i < N and pat[j] != txt[i] :
+#             if j != 0 :
+#                 j = Ips[j-1]
+#             else : 
+#                 i =+ 1
+
+# def computeLPSArray(pat, M, Ips) :
+#     len = 0
+
+#     Ips[0]
+#     i = 1
+
+#     while i < M :
+#         if pat[i] == pat[len] :
+#             len += 1
+#             Ips[i] = len
+#             i += 1
+#         else :
+#             if len != 0 :
+#                 len = Ips[len-1]
+#             else :
+#                 Ips[i] = 0
+#                 i += 1
+
+# txt = "AABAACAADAABAAABAA"
+# pat = "AABA"
+# KMPSearch("KMP : " + pat, txt)
 
