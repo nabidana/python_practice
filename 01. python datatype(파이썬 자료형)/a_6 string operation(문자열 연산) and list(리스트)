@@ -186,7 +186,7 @@ print("---------------------------------------------");
 # [120,150,300,500,1000,100,2000] 값에서 최소 최대 값을 뺀 평균을 average 이름의 변수에 담으세요
 
 main_list = [120,150,300,500,1000,100,2000];
-sum_list = (sum(main_list) - min(main_list) - max(main_list))/len(main_list);
+sum_list = (sum(main_list) - min(main_list) - max(main_list))/(len(main_list)-2);
 print(sum_list);
 
 print("---------------------------------------------");
