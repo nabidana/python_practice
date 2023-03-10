@@ -168,15 +168,15 @@ inlist = [10, 11, 12, 13, 14, 15];
 print(inlist.index(12));
 
 # 3. 리스트 연산관련 함수
-# 3-1. 최소 Value 구하기 함수
+# 3-1. 최소 Value 구하기 함수 (int만)
 # 사용법은 min(리스트)
 print(min(inlist));
 
-# 3-2. 최대 Value 구하기 함수
+# 3-2. 최대 Value 구하기 함수 (int만)
 # 사용법은 max(리스트)
 print(max(inlist));
 
-# 3-3. 모든 Value 합 구하기 함수
+# 3-3. 모든 Value 합 구하기 함수 (int만)
 # 사용법은 sum(리스트)
 print(sum(inlist));
 
