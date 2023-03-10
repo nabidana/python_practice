@@ -1,0 +1,192 @@
+head = "smart";
+tail = "anaylist"
+fullname = head+" "+tail;
+print(fullname);
+print("---------------------------------------------");
+alpabat = "abcdefgh";     #alpabat는 인덱스가 0부터 7까지 있다.
+print(alpabat[3]);        #해당구문은 alpabat의 인덱스3번을 불러오는것이므로, 'd'가 나온다.
+    #결과 : d
+print(alpabat[0:4]);      #해당구문은 alpabat의 인덱스 0번부터 3번(4번전)까지 불러온다.
+    #결과 : abcd
+print(alpabat[:4]);       #해당구문은 위와 동일하다.
+    #결과 : abcd
+print(alpabat[4:]);       #해당구문은 alpabat의 인덱스 4번부터 끝까지 불러온다.
+    #결과 : efgh
+print(alpabat[-1]);       #인덱스의 마이너스는 끝에서 부터 불러오는것이다.
+                        # <+>는 0부터 시작이지만, <->는 -1부터 시작한다.
+    #결과 : h
+print("---------------------------------------------");
+
+alpabat2 = "abcdWefgh";
+alpabat2_a = alpabat2.count('W');       # count함수는 해당 문자열의 갯수가 몇개있는지를 나타낸다.
+    #결과 : 1
+alpabat2_b = alpabat2.index('W');       # index함수는 해당 문자열의 인덱스위치를 나타낸다.
+    #결과 : 4
+print(alpabat2.count('W'));
+print(alpabat2.index('W'));
+alpabat2_plus = alpabat2[:alpabat2_a]+alpabat[alpabat2_a+1:];
+    #결과 : acdefgh
+print(alpabat2_plus);
+
+print("---------------------------------------------");
+
+sentens = "LED_tv";
+print(sentens.upper());     # upper함수는 모두 대문자로 나오게끔 하는 함수
+    #결과 : LED_TV
+print(sentens.lower());     # lower함수는 모두 소문자로 나오게끔 하는 함수
+    #결과 : led_tv
+
+print("---------------------------------------------");
+
+sentesn1 = "LEDWTV";
+sentens2 = sentesn1.replace("W", "_");      # replace(a,b) 함수는 a를 b로 바꾸는 함수
+    #결과 : LED_TV
+print(sentesn1);
+print(sentens2);
+
+print("---------------------------------------------");
+
+strvalue = '1234';
+numvalue = 1234;
+intavlue = int(strvalue);       # str형을 int형으로 변환하는 함수
+flovalue = float(strvalue);     # str형을 float형으로 변환하는 함수
+numstrvalue = str(numvalue);    # int형을 str형으로 변환하는 함수
+print(type(strvalue));
+print(type(intavlue));
+print(type(flovalue));
+print(type(numstrvalue));
+
+print("---------------------------------------------");
+
+qus1 = "LEDwTV";
+qus2 = "w";
+anw1 = qus1.split(qus2); # split(a) 함수는 a를 기준으로 문자열을 분리한다. 배열을 이용해 저장함
+print(anw1[0]);
+print(anw1[1]);
+
+print("---------------------------------------------");
+
+tta1 = "ABCwLEDeTV";
+tta2 = "w";
+tta3 = "e";
+ttad = tta1.replace(tta2, tta3).split(tta3); #여러개의 문자열 분리를 할경우에는 replace함수로 바꾼뒤
+                                             #문자열을 분리한다.
+print(ttad);
+
+print("---------------------------------------------");
+
+import re
+yearweek = "2013!#$^%^&!#!$%^!#$!#$13";
+reyearweek = re.sub("[!@#$%^&*()]","",yearweek);        
+                        # re라이브러리의 sub함수이용.
+                        # 사용방법은 re.sub(제외할특수문자열,바뀔문자,대상이되는문자열)
+print(reyearweek);
+
+
+print("---------------------------------------------");
+
+# “SEC 20180212 250”  문자열 생성 후
+# stock_name, date, value로 각각 의미하는
+# 문자열을 생성하세요
+ta1_full_name = "Sec 2018W28 250";
+ta1_full_name = ta1_full_name.upper().split(" ");
+ta1_stock_name = ta1_full_name[0];
+ta1_date_value = ta1_full_name[1].replace("W", "");
+ta1_value_value = ta1_full_name[2];
+
+print("STOCK NAME : " + ta1_stock_name);
+print("DATA VALUE : " + ta1_date_value);
+print("VALUE IS : " + ta1_value_value);
+
+print("---------------------------------------------");
+
+# len 함수 사용법은 len(배열변수명) 
+# len 함수는 배열의 길이를 가져온다. > .length의 줄임말
+
+test_lan_a = [0, 1, 2, 3, 4, 5];
+test_lan_b = [20, 21, 22, 23, [24, 25, 26, 27, 28]];
+test_len_a = len(test_lan_a);
+print(test_len_a);
+test_len_b = len(test_lan_b);
+print(test_len_b);
+
+print("---------------------------------------------");
+
+# list > 배열
+#리스트 삭제 함수는 del 리스트명[]
+
+test_list_a = [0, 1, 2, 3, 4, 5];
+print(test_list_a);
+del test_list_a[3];
+print(test_list_a);
+
+print("---------------------------------------------");
+
+#리스트 요소 추가 함수
+# 1. 맨뒤에 value 하나 추가 > 사용방법은 .append(Value)
+test_list_b = [0, 1, 3, 4];
+print(test_list_b);
+test_list_b.append(5);
+print(test_list_b);
+# 2. 해당 인덱스 위치에 value 하나 추가 > 사용방법은 .insert(인덱스값, value)
+test_list_b.insert(2, 2);
+print(test_list_b);
+# 3. 해당 리스트에 문자열 혹은 숫자를 한자리씩 추가 > 사용방법은 .extends(Value)
+test_list_b.extend([321, 789]);
+print(test_list_b);
+print("---------------------------------------------");
+
+# 리스트 요소 삭제 함수
+# 1. 맨뒤 Value 하나 삭제 > 사용방법은 .pop()
+test_list_c = [0, 1, 2, 3];
+test_list_c.pop();
+print(test_list_c);
+
+# 2. Value 값 하나 삭제 > 사용방법은 .remove(Value값)
+test_list_d = [10, 11, 12, 13];
+test_list_d.remove(11);
+print(test_list_d);
+
+print("---------------------------------------------");
+
+#리스트 정렬 및 연산관련 함수
+# 1. 리스트 정렬 함수. 리스트를 순서대로 정렬하는 함수
+# 사용법은 리스트.sort(reverse=True/False)
+# reverse=True인 경우 큰값부터 정렬한다.
+# reverse=False인 경우 작은값부터 정렬한다.
+solist = [5, 4, 1, 9, 7, 6];
+solist.sort(reverse=True);
+solist1 = [5, 4, 1, 9, 7, 6];
+solist1.sort(reverse=False);
+print(solist);
+print(solist1);
+
+# 2. value로 인덱스가져오는 함수
+# .index(Value값)
+
+inlist = [10, 11, 12, 13, 14, 15];
+print(inlist.index(12));
+
+# 3. 리스트 연산관련 함수
+# 3-1. 최소 Value 구하기 함수
+# 사용법은 min(리스트)
+print(min(inlist));
+
+# 3-2. 최대 Value 구하기 함수
+# 사용법은 max(리스트)
+print(max(inlist));
+
+# 3-3. 모든 Value 합 구하기 함수
+# 사용법은 sum(리스트)
+print(sum(inlist));
+
+print("---------------------------------------------");
+
+# 실습
+# [120,150,300,500,1000,100,2000] 값에서 최소 최대 값을 뺀 평균을 average 이름의 변수에 담으세요
+
+main_list = [120,150,300,500,1000,100,2000];
+sum_list = sum(main_list) - min(main_list) - max(main_list);
+print(sum_list);
+
+print("---------------------------------------------");
