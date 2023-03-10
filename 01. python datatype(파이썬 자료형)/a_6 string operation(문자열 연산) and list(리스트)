@@ -190,3 +190,23 @@ sum_list = (sum(main_list) - min(main_list) - max(main_list))/(len(main_list)-2)
 print(sum_list);
 
 print("---------------------------------------------");
+
+
++) 배열에 중복되는 값이 잇을경우 평균구하기
+main_list2 = [120,150,300,500,1000,100,2000,100,100,2000];
+list_min = min(main_list2);
+min_count = main_list2.count(list_min);
+for i in range(min_count) :
+    main_list2.remove(min(main_list2));
+list_max = max(main_list2);
+max_count = main_list2.count(list_max);
+for i in range(max_count) :
+    main_list2.remove(max(main_list2));
+sum_list = sum(main_list2);
+len_list = len(main_list2);
+list_avg = sum_list/len_list;
+
+print(list_avg);
+
+prd = '평균값은 : {}'.format(list_avg);
+print(prd);
