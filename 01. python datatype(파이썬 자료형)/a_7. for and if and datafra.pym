@@ -54,4 +54,21 @@ pass # pass 문은 skip과 같은 의미이다.
 
 #else는 안쓰는 경우도 있다. 만약 else를 안쓰면 초기기본값 설정을 필수로 해주어야 한다.
 
+import re
+tvList2 = ['UN40EN001', 'LEDTV_UN40EN002','LEDTV_LEDTV_UN40EN003', 'ledtv_UN40EN004', 'LEDTV_LEDTV_LEDTV_UN40EN003'];
+#리스트에서 LEDTV_가 한 개만 앞에 붙도록 하세요
+#(* 대소문자 구분없이 전부 처리!)
 
+
+prefix = "LEDTV_"
+for i in range(len(tvList2)) :
+    tvList2[i] = tvList2[i].upper();
+    if tvList2[i].count(prefix) == 0 :
+        tvList2[i] = prefix + tvList2[i];
+    elif tvList2[i].count(prefix) == 1 :
+        pass
+    else :
+        tvList2[i] = re.sub("LEDTV_","",tvList2[i])
+        tvList2[i] = prefix + tvList2[i]
+
+print(tvList2)
