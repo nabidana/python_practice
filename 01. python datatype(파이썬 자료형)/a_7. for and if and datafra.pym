@@ -8,7 +8,34 @@ testdf.columns = ["이름", "번호", "기타"] #데이터프레임을 출력할
 #데이터 전처리시 컬럼의 이름은 맨앞에 숫자가 없어야 하고, 특수문자가 없어야한다. <중요>
 #데이터 전처리로 로직하라는 뜻은 이름에 아무것도 없어야 한다.
 
-columnList = list(testdf.colum);
+컬럼값에 %% ^^ ## 등의 특수문자가 들어간 컬럼값을 데이터 전처리로 처리해라
 
-testdf.columns=newcolumn
-testdf
+import pandas as pd
+import re
+rowlist = ["철수", "1234", "chuy"];
+rowlist2 = ["영희", "1234", "young"];
+
+testdf = pd.DataFrame([rowlist, rowlist2]);
+testdf.columns=["이%%름", "학^^번", "이##메일"];
+
+columnList = list(testdf.columns);
+print(columnList);
+# 해당 구문의 결과는 
+  이%%름  학^^번  이##메일
+0   철수  1234   chuy
+1   영희  1234  young
+
+로 나온다.
+
+for i in range(len(columnList)) : #for 문을 comlumnList의 인덱스 길이만큼 반복
+    columnList[i] = re.sub("[!@#$%^&*()]","",columnList[i]);    #columnList[0]번부터 끝까지 re.sub(바꿀대상의문자, 바꾼후의문자, 어디에서) 함수를 이용해서 실행
+
+testdf.columns=columnList;
+print(testdf);
+
+#를 통해서 각 인덱스의 데이터에 있는 특수문자를 제거한다.
+#해당 구문의 결과는
+   이름    학번    이메일
+0  철수  1234   chuy
+1  영희  1234  young
+
