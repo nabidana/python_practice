@@ -6,7 +6,7 @@ testdf = pd.DataFrame([list], [list2])
 testdf.columns = ["이름", "번호", "기타"] #데이터프레임을 출력할때 컬럼값을 설정하는것
 
 #데이터 전처리시 컬럼의 이름은 맨앞에 숫자가 없어야 하고, 특수문자가 없어야한다. <중요>
-
+#데이터 전처리로 로직하라는 뜻은 이름에 아무것도 없어야 한다.
 
 columnList = list(testdf.colum);
 
