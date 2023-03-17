@@ -1,0 +1,14 @@
+import pandas as pd #pandas라이브러리를 호출한다. 데이터프레임이 들어가잇음.
+                    #데이터 프레임은 엑셀처럼 표를 만들어서 호출한다.
+list = ["QWE", "1234", "aadd"]
+list2 = ["RTY", "1234", "zzxx"]
+testdf = pd.DataFrame([list], [list2])
+testdf.columns = ["이름", "번호", "기타"] #데이터프레임을 출력할때 컬럼값을 설정하는것
+
+#데이터 전처리시 컬럼의 이름은 맨앞에 숫자가 없어야 하고, 특수문자가 없어야한다. <중요>
+
+
+columnList = list(testdf.colum);
+
+testdf.columns=newcolumn
+testdf
