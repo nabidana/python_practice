@@ -39,3 +39,18 @@ print(testdf);
 0  철수  1234   chuy
 1  영희  1234  young
 
+
+
+#if 조건 문
+
+if (조건) : 
+  조건이 참이면 실행
+elif(조건) :
+  elif조건이 참이면 실행
+else :
+  나머지면 실행
+
+pass # pass 문은 skip과 같은 의미이다.
+
+
+
