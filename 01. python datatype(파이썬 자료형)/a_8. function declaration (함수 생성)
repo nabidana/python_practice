@@ -1,0 +1,21 @@
+#함수 생성
+
+def minMaxAvg(testlist) :   ##def 선언문
+    """
+    함수 : average that sum= sum - min - max    ## """ ~~~ """ 처럼 """ """ 사이에 입력하면 쉬푸트탭(설명문)이나올때 나오게 만들 수 있음.
+    최소최대값을뺀평균
+    """
+    minValue = min(testlist)
+    maxValue = max(testlist)
+    print("최대값{}, 최소값{}".format(minValue,maxValue))   ##format구문
+    testlist.remove(minValue)
+    testlist.remove(maxValue)
+    avr = 0;
+    if len(testlist) != 0 :
+        avr = sum(testlist)/len(testlist)
+    else :
+        pass
+    return avr;
+
+inlist = [5,1,6,8,4,9,7,3,2]
+print(minMaxAvg(inlist))
