@@ -75,3 +75,36 @@ findDa2 = findDa1.findAll(name = "a")    #이름이 a인 태그를 모두 찾아
 print(findDa2)
 #함수중
 #find 후에는 find를 할 수있지만, findAll후에는 find가 불가능하다.
+
+# <a href="https://forms.gle/Fw49w9GhWQChDcZm7"> 6/13 Spark 심화과정 </a> 에서
+quizName1 = findDa2[0].text     #0번 인덱스의 텍스트 부분만 호출
+print(quizName1)            #결과 :  6/13 Spark 심화과정
+
+quizLink1 = findDa2[0].attrs["href"]    #0번 인덱스의 태그이름이 href인것.
+print(quizLink1)            #결과 : https://forms.gle/Fw49w9GhWQChDcZm7
+
+quizNameList = []
+quizLinkList = []
+for i in range( len(findDa2) ) :
+
+    quizName = findDa2[0].text
+    quizLink = findDa2[0].attrs["href"]
+
+    quizNameList.append(quizName)
+    quizLinkList.append(quizLink)
+
+import pandas as pd
+finList1 = pd.DataFrame( zip (quizNameList, quizLinkList), columns=["퀴즈이름", "퀴즈링크"])
+print(finList1)
+
+print("-------------------------------------")
+
+rowList = []
+
+for i in range ( len(findDa2) ):
+    quizText = findDa2[i].text
+    quizAttrs = findDa2[i].attrs["href"]
+    rowList.append([quizText,quizAttrs])        #인덱스에 리스트값을 그대로 넣어준다.
+
+finList2 = pd.DataFrame( rowList ,columns=["문제","링크"])
+print(finList2)
