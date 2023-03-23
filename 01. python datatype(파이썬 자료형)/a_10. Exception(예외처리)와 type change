@@ -1,0 +1,16 @@
+# try catch 문 : 예외처리
+# 변수.astype 함수 -> 타입변형 함수이다.
+# object 타입은 일반적인 타입(int, str, chr, float, double)로 변환하려면 다른 방법을써야함.
+
+
+#사용법
+ try:
+     indate[컬럼] = 리스트[컬럼].astype(타입변형)
+ except Exception as e :
+     print(e)
+     
+     
+     
+#loc함수
+#사용법
+리스트변수.loc[행인덱스값(세로값), 열인덱스값(가로 컬럼)]
