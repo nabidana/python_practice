@@ -96,6 +96,7 @@ for i in range( len(findDa2) ) :
 import pandas as pd
 finList1 = pd.DataFrame( zip (quizNameList, quizLinkList), columns=["퀴즈이름", "퀴즈링크"])
 print(finList1)
+#위 문구는 text부분과 href부분을 따로 따로 담는다.
 
 print("-------------------------------------")
 
@@ -108,3 +109,4 @@ for i in range ( len(findDa2) ):
 
 finList2 = pd.DataFrame( rowList ,columns=["문제","링크"])
 print(finList2)
+#이부분은 text부분과 href부분을 하나의 리스트로 인덱스에 리스트채로 담는다. (이중리스트)
