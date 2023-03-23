@@ -114,3 +114,8 @@ print(finList2)
 
 get방식에서 검색창은 쿼리서칭으로
 q=서칭이름
+
+
+# 파이썬이 루트가 아닌 정상적인 루트로 우회해서 접속하는 방법
+user_agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/100.0.4896.75 Safari/537.36'
+resp = requests.get(targetUrl,headers = {'User-Agent':user_agent} )
