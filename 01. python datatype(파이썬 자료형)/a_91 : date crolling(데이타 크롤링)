@@ -1,0 +1,77 @@
+#ETL -> Extract Transform Load : 데이타를 저장소에 저장하기 위해 결합하는 과정
+
+import pandas as pd
+colList = ["김김", "님님", "딤딤"]
+colList2 = [41, 10, 39]
+#결과
+#    0   1
+#0  김김  41
+#1  님님  10
+#2  딤딤  39
+
+df1 = pd.DataFrame ( zip( colList, colList2) )
+print(df1)
+
+rowList = ["김김", 41]
+rowList2 = ["님님", 10]
+rowList3 = ["딤딤", 39]
+
+df2 = [rowList, rowList2, rowList3]
+print(df2)
+
+# 결과
+# [['김김', 41], ['님님', 10], ['딤딤', 39]]
+
+nameVal = "지지"
+tdf = pd.DataFrame( [nameVal] )
+tdf.columns=["컬럼0"]
+print(tdf)
+
+# 결과
+#   컬럼0
+# 0  지지
+
+웹에서 데이터 크롤링 하기.
+import requests, bs4
+#bs4 라이브러리 설치 pip install bs4
+#웹 request & source가져오기
+targetPg = requests.get("https://sparkkorea.com/퀴즈/")
+html = targetPg.text   #html변수에 response 패킷을 text속성으로 UTF-8 문자열로 추출.
+#태그정보 예쁘게 출력
+bs = bs4.BeautifulSoup(html, 'html.parser')
+
+
+try :
+    resPK = requests.get(targetURL);
+except Exception as e :
+    print(e)
+
+webPagesr = resPK.text
+beautiPage = bs4.BeautifulSoup(webPagesr, "html.parser")
+print(beautiPage)
+
+#태그정보 수집
+divs = beautiPage.find(name = "div")
+print( type(divs) )     #find함수로 찾은 값은 배열에 저장한다.  #결과 <class 'bs4.element.Tag'>
+#.find 함수를 통해 태그정보를 수집할 수 있다. div태그라던가 다른 부분
+
+tagFirst = beautiPage.find(name = "a")
+print(tagFirst) #a태그를 찾아서 담는다.
+#결과   :   <a class="skip-link screen-reader-text" href="#content">컨텐츠로 건너뛰기</a>
+
+print( tagFirst.attrs["href"] )     #결과   :   #content
+#속성에접근하는 함수
+#사용법은 변수.attrs[태그이름]
+
+print( tagFirst.text )      #결과 : 컨텐츠로 건너뛰기 <텍스트 부분만 가져온다>
+
+#속성값 활용해서 태그정보수집
+findDa1 = beautiPage.find(name = "div", attrs={"id" : "id_spark_quiz"} )
+#딕셔너리 (키, 값) > ID라는 키중 값이 id_spark_quiz 인것. div id에 잇는거.
+print(findDa1)
+
+
+findDa2 = findDa1.findAll(name = "a")    #이름이 a인 태그를 모두 찾아온다.
+print(findDa2)
+#함수중
+#find 후에는 find를 할 수있지만, findAll후에는 find가 불가능하다.
