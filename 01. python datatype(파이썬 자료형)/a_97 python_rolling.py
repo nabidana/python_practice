@@ -9,3 +9,6 @@ dataframe['컬럼명'].rolling(window=숫자).mean()
 #따라서 자신을 중심으로 위, 아래의 값들을 가지고 평균을 구하고 싶을 경우에는
 dataframe['컬럼명'].rolling(window=숫자, center=True).mean()
 #을 사용하면 된다.
+#최소 구간을 설정하여서 범위에 해당안되는값으 잇더라도, 제외하고 계산하고싶을 경우에는
+dataframe['컬럼명'].rolling(window=숫자, center=True, min_periods=숫자).mean()
+#을 아용하면 된다.
