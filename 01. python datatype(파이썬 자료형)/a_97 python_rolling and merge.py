@@ -12,3 +12,22 @@ dataframe['컬럼명'].rolling(window=숫자, center=True).mean()
 #최소 구간을 설정하여서 범위에 해당안되는값으 잇더라도, 제외하고 계산하고싶을 경우에는
 dataframe['컬럼명'].rolling(window=숫자, center=True, min_periods=숫자).mean()
 #을 아용하면 된다.
+
+import pandas as pd
+import numpy as np
+
+joms = pd.read_csv('../dataset/join_region_master.csv', encoding='ms949')
+josl = pd.read_csv('../dataset/join_kopo_product_volume.csv')
+
+#merge는 두개의 다른 컬럼을 구룹바이처럼 하나의 카테고리를 기준으ㅗㄹ 합치는 것.
+qwe = pd.merge(left = josl, right=joms, on = ['REGIONID'])
+print(qwe)
+
+#컬럼의 이름을 바꾸는것
+josl = josl.rename(columns={"REGIONID":"SALESID"})
+#merge에서 속성값을 참조할경우
+asd = pd.merge ( left= josl, right=joms, left_on="SALESID", right_on= "REGIONID")\
+            [ ['REGIONID', 'REGIONNAME', 'PRODUCT', "QTY"] ]
+
+print(asd)
+
