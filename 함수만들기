@@ -1,0 +1,136 @@
+#pandas 함수로 만들어버리기
+import pandas as pd
+from sqlalchemy import create_engine
+import cx_Oracle
+import pymysql
+import numpy as np
+import re
+
+def oracle_select(oracleDBinfo, sqlq) :
+    """
+    oracleDB연결 후 return값 없는 순수 조회문.
+    oracle_select(오라클정보가 담긴 배열[id, pw, ip, dbname], sql문) 입력
+    sql문 입력시에는 "~~" 처럼 큰따음표로 선언한 문자열을 넣어주어야 함.
+    """
+    dbid = oracleDBinfo[0]
+    dbpw = oracleDBinfo[1]
+    dbip = oracleDBinfo[2]
+    dbname = oracleDBinfo[3]
+    engine = create_engine('oracle://{}:{}@{}:1521/{}'.format(dbid, dbpw, dbip, dbname))
+    indata=pd.read_sql_query(sqlq, engine)
+    print(indata)
+
+def oracle_selectandmakedataframe(oracleDBinfo, sqlq) :
+    """
+    oracleDB연결 후 dataframe으로 저장해서 return 해주는 조회문.
+    변수 = oracle_selectandmakedataframe(오라클정보가 담긴 배열[id, pw, ip, dbname], sql문) 입력
+    sql문 입력시에는 "~~" 처럼 큰따음표로 선언한 문자열을 넣어주어야 함.
+    """
+    dbid = oracleDBinfo[0]
+    dbpw = oracleDBinfo[1]
+    dbip = oracleDBinfo[2]
+    dbname = oracleDBinfo[3]
+    engine = create_engine('oracle://{}:{}@{}:1521/{}'.format(dbid, dbpw, dbip, dbname))
+    dataframeName=pd.read_sql_query(sqlq, engine)
+    return dataframeName
+
+def oracle_savetooracleDB(oracleDBinfo, dataframe) :
+    """
+    oraacleDB연결 후, dataframe을 DB에 저장한다.
+    oracle_savetooracleDB(오라클정보가 담긴 배열[id, pw, ip, dbname], dataframe) 입력
+    table이름은 datafram변수명이다.
+    """
+    dbid = oracleDBinfo[0]
+    dbpw = oracleDBinfo[1]
+    dbip = oracleDBinfo[2]
+    dbname = oracleDBinfo[3]
+    engine = create_engine('oracle://{}:{}@{}:1521/{}'.format(dbid, dbpw, dbip, dbname))
+    dataframe.to_sql(name='{}'.format(dataframe), con=engine, if_exists='append', index=False)
+
+
+def mysql_select(mysqlDBinfo, sqlq) :
+    """
+    mysqlDB연결 후 return값이 없는 순수 조회문.
+    mysql_select(MYSQL정보가 담긴 배열[id, pw, ip, dbname], sql문) 입력
+    sql문 입력시에는 "~~" 처럼 큰따음표로 선언한 문자열을 넣어주어야 함.
+    """
+    dbid = mysqlDBinfo[0]
+    dbpw = mysqlDBinfo[1]
+    dbip = mysqlDBinfo[2]
+    dbname = mysqlDBinfo[3]
+    engine = create_engine("mysql+pymysql://{}:{}@{}/{}", encoding = 'utf-8')
+    conn = engine.connect()
+    indata=pd.read_sql_query(sqlq, engine)
+    print(indata)
+
+def mysql_selectandmakedataframe(mysqlDBinfo, sqlq) :
+    """
+    mysqlDB연결 후 dataframe으로 저장해서 return 해주는 조회문.
+    변수 = mysql_select(MYSQL정보가 담긴 배열[id, pw, ip, dbname], sql문) 입력
+    sql문 입력시에는 "~~" 처럼 큰따음표로 선언한 문자열을 넣어주어야 함.
+    """
+    dbid = mysqlDBinfo[0]
+    dbpw = mysqlDBinfo[1]
+    dbip = mysqlDBinfo[2]
+    dbname = mysqlDBinfo[3]
+    engine = create_engine("mysql+pymysql://{}:{}@{}/{}", encoding = 'utf-8')
+    conn = engine.connect()
+    indata=pd.read_sql_query(sqlq, engine)
+    return indata
+
+def mysql_savetomysqlDB(mysqlDBinfo, dataframe) :
+    """
+    mysqlDB연결 후, dataframe을 DB에 저장한다.
+    mysql_savetooracleDB(MYSQL정보가 담긴 배열[id, pw, ip, dbname], dataframe) 입력
+    table이름은 datafram변수명이다.
+    """
+    dbid = mysqlDBinfo[0]
+    dbpw = mysqlDBinfo[1]
+    dbip = mysqlDBinfo[2]
+    dbname = mysqlDBinfo[3]
+    engine = create_engine("mysql+pymysql://{}:{}@{}/{}", encoding = 'utf-8')
+    conn = engine.connect()
+    dataframe.to_sql(name='{}'.format(dataframe), con=engine, if_exists='append', index=False)
+
+def pandashelpmsg() :
+    """
+    pandas함수 관련 프린트 시키는것
+    """
+    print('dataframe.info() : 데이터의 정보 확인')
+    print('dataframe.isnull() : 데이터 값이 null 인지 확인')
+    print('dataframe.loc : 특정 인덱스, 특정 컬럼을 통해 조회하기<함수 : dataframeloc>')
+    print('dataframe의 numpy.where : 컬럼 조건에 따른 값 출력시키도록 하기<함수 : dataframnumpywhere>')
+
+def dataframeloc(dataframe, indexval, columval) :
+    """
+    pandas함수 .loc을 실행시키는 함수
+    변수=dataframeloc(dataframe, 인덱스값, 컬럼값)
+    특정 인덱스 및 컬럼만 추출하고 싶을 경우에는 배열로 입력
+    나머지는 '숫자:숫자'
+    인덱스 혹은 컬러만 입력 할 경우에는 사용하지 않는 값에는 ':'를 넣어주기
+    """
+    if(columval == ':') :
+        if ':' in indexval :
+            
+            return dataframe.loc[int(indexval[0]):int(indexval[2])]
+        else :
+            return dataframe.loc[indexval]
+    else :
+        if (':' in indexval) and (':' in columval) :
+            return dataframe.loc[int(indexval[0]):int(indexval[2])]
+        elif 
+        return dataframe.loc[indexval, columval]
+
+def dataframnumpywhere() :
+    """
+    numpy의 where함수 사용
+    dataframnumpywhere(조건식, 참일때값, 거짓일때 값)
+    """
+
+
+#oracle://kopo:kopo@192.168.110.112:1521/orcl
+ocin = [ 'kopo', 'kopo', '192.168.110.112', 'orcl']
+ads22 = "select * from tabs where 1=1 and table_name like 'KOPO%' and table_name not like '%{%' and not regexp_like(table_name, '[가-힝]') ORDER BY table_name"
+ads = 'select * from tabs'
+pla = oracle_selectandmakedataframe(ocin, ads22)
+print(dataframeloc(pla, '0:4', ':'))
