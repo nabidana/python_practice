@@ -58,7 +58,7 @@ sns.lmplot(data = featureData, x="QTY", y="PRO_PERCENT")
 #2. 특성선정
 #상관관계 확인하는것. 두 변수 간 선형적 혹은 비선형적 관계 분석하는것
 corrDF = featureData.corr()
-print(corrDF)
+#print(corrDF)
 
 #그래프차트로 한눈에보기위해서
 #상관관계의 QTY컬럼만 불러옴
@@ -66,8 +66,8 @@ print(corrDF)
 qtyCorr = corrDF.loc[:,["QTY"]].sort_values(by=["QTY"], ascending=False)
 #annot = true -> 숫자불러오기.
 #heatmap 색깔별 그래프를 출력해주는것.
-sns.heatmap( qtyCorr, annot=true)
-sns.show()
+#sns.heatmap( qtyCorr, annot=True)
+#sns.show()
 
 
 #머신러닝일경우 튜닝된 기준값을 세팅하고 모델을 돌린다. 코릴레이션(상관관계)
@@ -88,7 +88,7 @@ featurezz = list ( corrDF.loc[ (abs( corrDF.QTY) > stdCorr) & (abs( corrDF.QTY) 
 featuresStd = 0.5
 #문제 대상 컬럼(특성 선정하기)
 features = list(corrDF[ (abs(corrDF.QTY) > featuresStd) & (abs(corrDF.QTY) != 1)].index)
-print(features)
+#print(features)
 
 label = ['QTY']
 
@@ -113,7 +113,7 @@ testDataLabel = featureData.loc[stdIndex+1:, label]
 
 #위와 동일한 방법
 #날짜순으로 정렬을 해주어야함
-sortKey = ["YEARWEEL"]
+sortKey = ["YEARWEEK"]
 #정렬을 하고 기존 인덱스를 버리고 새로 인덱스를 부여한다.
 sortedDate = featureData.sort_values(sortKey).reset_index(drop=True)
 #최소 및 최대 치를 확인할수 있는것.
@@ -159,7 +159,7 @@ predict = model.predict(testDataFeatures)
 
 #예측결과 데이터프레임으로 변환
 testDataLabel['PREDICT_DT']=predict
-print(testDataLabel)
+#print(testDataLabel)
 
 #미래예측방법
 inputHclus = 1 #휴일 -> 대휴일 : 1 // 소휴일 : 4
@@ -169,5 +169,11 @@ inputHlb = 1 #홀리데이 적용 Y
 
 testDt = pd.DataFrame([ [inputHclus, inputProPercent, inputPromotionLB, inputHlb]])
 rssa = model.predict(testDt)
-print()
-print(rssa)
+#print()
+#print(rssa)
+
+from sklearn.tree import plot_tree
+import matplotlib.pyplot as plt
+plt.figure(figsize=(13, 8))
+plot_tree(model)
+
