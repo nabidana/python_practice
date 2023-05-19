@@ -7,6 +7,7 @@ from sklearn import datasets, tree
 from sklearn.metrics import mean_squared_error
 from sklearn.metrics import mean_absolute_error
 
+#1. 데이터 전처리
 featureData = pd.read_csv('./dataset/feature_regression_example.csv');
 #데이터 타입 표준화해서 바꾸기
 featureData['YEARWEEK']=featureData.YEARWEEK.astype(int)
@@ -22,12 +23,58 @@ featureData['PRO_YN']=featureData.PROMOTION.map(binaryMap)
 # case 2 : np.where 사용(조건문)
 #featureData['HO_YNM']=np.where(featureData.PROMOTION == "Y", 1 ,0)
 
+#라벨인코더
+#from sklearn.preprocessing import LabelEncoder
+#객체를 만든다.
+#ynLabelEn = LanelEncoder()
+
+# >1 fit_transfrom 함수
+#ynLabelEn.fit_transform(featureData["HOLIDAY"])
+#HOLIDAY컬럼의 각 데이터를 알아서 매핑해서 encoding 시킨다.
+
+# >2 inverse_transform 함수
+#인코딩 시킨것을 다시 디코딩 시키는 작업.
+#ynLabelEn.inverse_transform(featureData["HOLIDAY"])
+
 #검증용
 #colsdf1 = featureData.loc[ (featureData.HO_YNM == 1) & (featureData.PROMOTION !="Y")]
 #colsdf2 = featureData.loc[ (featureData.HO_YNM == 0) & (featureData.PROMOTION !="N")]
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+#매직명령어. plt.show를 안써도 나오게하는거
+#%matplotlib inline > 쥬피터랩에서만동작함.
+
+#plt사이즈 정하기
+#plt.figure(figsize=(5,3))
+#데이터 차트화
+sns.lmplot(data = featureData, x="QTY", y="PRO_PERCENT")
+#plt showing 해주기. (시각화 그래프를 그려주는 것.)
+#plt.show()
+
+#차트를 그래프화 시켜서 보여주는것.
+#sns.distplot(featureData["QTY"])
+
+#2. 특성선정
 #상관관계 확인하는것. 두 변수 간 선형적 혹은 비선형적 관계 분석하는것
 corrDF = featureData.corr()
 print(corrDF)
+
+#그래프차트로 한눈에보기위해서
+#상관관계의 QTY컬럼만 불러옴
+#QTY컬럼을 sort 시켜서 높은애부터 불러옴
+qtyCorr = corrDF.loc[:,["QTY"]].sort_values(by=["QTY"], ascending=False)
+#annot = true -> 숫자불러오기.
+#heatmap 색깔별 그래프를 출력해주는것.
+sns.heatmap( qtyCorr, annot=true)
+sns.show()
+
+
+#머신러닝일경우 튜닝된 기준값을 세팅하고 모델을 돌린다. 코릴레이션(상관관계)
+
+stdCorrRepeat = np.array( list( range(3,8,1) ) ) / 10
+stdCorr = 0.6
+featurezz = list ( corrDF.loc[ (abs( corrDF.QTY) > stdCorr) & (abs( corrDF.QTY) != 1) ].index )
 
 #참고용
 #피어슨 구하기
@@ -45,6 +92,12 @@ print(features)
 
 label = ['QTY']
 
+#집어넣은 값을 8:2로 데이터를 알아서 랜덤하게 나누어서 결과를 줌
+# *단 시간순서로 머신러닝을 돌려야할때는 적합하지않다. 왜냐면, 무작위로 데이터를 고르기 때문.
+#from sklearn.model_selection import train_test_split
+#random_state를 고정시키면 해당 값은 언제나 동일하게 고정되어 있다.
+#trData,tdData = train_test_split(featureData, test_size=0.2, random_state=10)
+
 #기계한테 학습시킬대 훈련 데이터는 약70퍼 센트만큼하고 나머지 30% 테스트 데이터로 나둔다.
 
 stdRatio = 0.7
@@ -57,6 +110,30 @@ trainingDataLabel = featureData.loc[:stdIndex, label]
 testDataFeatures = featureData.loc[stdIndex+1:, features]
 #테스트정답지
 testDataLabel = featureData.loc[stdIndex+1:, label]
+
+#위와 동일한 방법
+#날짜순으로 정렬을 해주어야함
+sortKey = ["YEARWEEL"]
+#정렬을 하고 기존 인덱스를 버리고 새로 인덱스를 부여한다.
+sortedDate = featureData.sort_values(sortKey).reset_index(drop=True)
+#최소 및 최대 치를 확인할수 있는것.
+sortedDate.YEARWEEK.describe()
+
+#날짜기준
+stdyearweek = 2016
+trainingDatafeautrez = featureData.loc[featureData.YEAR < stdyearweek, features]
+trainingDatalabelz = featureData.loc[featureData.YEAR < stdyearweek, label]
+testDatafeautrez = featureData.loc[featureData.YEAR > stdyearweek, features]
+testDatalabelz = featureData.loc[featureData.YEAR > stdyearweek, label]
+#인덱스기준
+#indexNumzz = 0.7
+#stdIndexz = int( featureData.shape[0] * indexNumzz)
+# trainingDatafeautrez = featureData.loc[featureData.index < stdIndexz, features]
+# trainingDatalabelz = featureData.loc[featureData.index < stdIndexz, label]
+# testDatafeautrez = featureData.loc[featureData.index > stdIndexz, features]
+# testDatalabelz = featureData.loc[featureData.index > stdIndexz, label]
+
+
 
 # print(trainingDataFeatures.shape)
 # print(trainingDataLabel.shape)
